@@ -16,7 +16,7 @@ namespace Project.Core.Pipeline
 
             // 畫出半透明黑色除錯底框
             GUI.backgroundColor = new Color(0, 0, 0, 0.85f);
-            GUILayout.BeginArea(new Rect(30, 30, 400, 350), "【BBBNexus 復刻誌 - 黑板數據流監視器】", GUI.skin.box);
+            GUILayout.BeginArea(new Rect(30, 30, 400, 350), "【黑板數據流監視器】", GUI.skin.box);
             GUILayout.Space(25);
 
             // 1. 意圖區
