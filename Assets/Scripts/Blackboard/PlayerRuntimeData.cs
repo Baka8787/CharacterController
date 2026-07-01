@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Project.Core.Arbitration;
+using UnityEngine;
 
 namespace Project.Core.Blackboard
 {
@@ -9,6 +10,7 @@ namespace Project.Core.Blackboard
 
     /// <summary>
     /// 資料中心黑板：所有玩法模組唯一的讀寫窗口
+    /// ⚠️ 規格書防禦警語：絕對不可在此加入 public InputData RawInput; 否則編譯直接失敗。
     /// </summary>
     public class PlayerRuntimeData
     {
@@ -30,5 +32,11 @@ namespace Project.Core.Blackboard
         /// </summary>
         public ItemInstance CurrentWeapon { get; internal set; }
         public Transform AimTarget { get; set; }
+
+        // === 仲裁區 ===
+        /// <summary>
+        /// 每幀由仲裁管線統一覆寫，表現層下游只讀不寫
+        /// </summary>
+        public ArbiterData Arbitration;
     }
 }

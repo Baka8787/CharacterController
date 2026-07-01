@@ -32,18 +32,20 @@ namespace Project.Core.Pipeline
         {
             if (_inputSource == null) return;
 
-            // =================================================================
-            // 執行順序符合 v0.2 規格書 3.0 節定義：
-            // =================================================================
+            // 【順序 1】InputPipeline - 在 Stack 上配置預設結構體體
+            // 透過 ref 傳遞，讓輸入源直接改寫此 stack 變數，達成真正零 GC Alloc
+            InputData inputData = default;
+            _inputSource.FetchRawInput(ref inputData);
 
-            // 【順序 1】InputPipeline - 採樣裝置原始輸入
-            InputData inputData = _inputSource.Sample();
-
-            // 【順序 2】Intent Processor - 寫入當帧意圖
-            ProcessIntents(inputData);
+            // 【順序 2】Intent Processor 
+            // 規格書防禦：若黑板仲裁區標記 BlockInput，則跳過意圖寫入
+            if (!_runtimeData.Arbitration.BlockInput)
+            {
+                ProcessIntents(ref inputData); // 改為傳址
+            }
 
             // 【順序 3】Parameter Processor - 更新黑板連續參數
-            ProcessParameters(inputData);
+            ProcessParameters(ref inputData);
 
             // 【順序 4】狀態機 Tick (預留位置，後續實作接上)
             // 讀取黑板中的 Intent，讀完即可視為被狀態機消耗
@@ -69,7 +71,7 @@ namespace Project.Core.Pipeline
         /// <summary>
         /// Intent Processor 邏輯（當前內嵌於 Runner，重構訊號：超過 10-15 行時抽離）
         /// </summary>
-        private void ProcessIntents(InputData input)
+        private void ProcessIntents(ref InputData input)
         {
             if (input.JumpButtonDown) _runtimeData.Intent.JumpRequested = true;
             if (input.RollButtonDown) _runtimeData.Intent.RollRequested = true;
@@ -84,7 +86,7 @@ namespace Project.Core.Pipeline
         /// <summary>
         /// Parameter Processor 邏輯（當前內嵌於 Runner）
         /// </summary>
-        private void ProcessParameters(InputData input)
+        private void ProcessParameters(ref InputData input)
         {
             _runtimeData.MoveDirection = input.MoveInput;
             _runtimeData.MoveSpeed = input.MoveInput.magnitude;

@@ -13,9 +13,6 @@ namespace Project.Core.Pipeline
         public InputAction RollAction;
         public InputAction FireAction;
 
-        // 遵循 0.1 命名規範：私有欄位使用 _camelCase
-        private readonly InputData _inputData = new InputData();
-
         private void OnEnable()
         {
             MoveAction?.Enable();
@@ -34,16 +31,17 @@ namespace Project.Core.Pipeline
             FireAction?.Disable();
         }
 
-        public InputData Sample()
+        /// <summary>
+        /// v0.3 變更：不再 new 或回傳物件，改為直接將採樣數值寫入傳進來的 Stack 記憶體
+        /// </summary>
+        public void FetchRawInput(ref InputData data)
         {
-            _inputData.MoveInput = MoveAction != null ? MoveAction.ReadValue<Vector2>() : Vector2.zero;
-            _inputData.LookInput = LookAction != null ? LookAction.ReadValue<Vector2>() : Vector2.zero;
+            data.MoveInput = MoveAction != null ? MoveAction.ReadValue<Vector2>() : Vector2.zero;
+            data.LookInput = LookAction != null ? LookAction.ReadValue<Vector2>() : Vector2.zero;
 
-            _inputData.JumpButtonDown = JumpAction != null && JumpAction.WasPressedThisFrame();
-            _inputData.RollButtonDown = RollAction != null && RollAction.WasPressedThisFrame();
-            _inputData.FireButtonDown = FireAction != null && FireAction.WasPressedThisFrame();
-
-            return _inputData;
+            data.JumpButtonDown = JumpAction != null && JumpAction.WasPressedThisFrame();
+            data.RollButtonDown = RollAction != null && RollAction.WasPressedThisFrame();
+            data.FireButtonDown = FireAction != null && FireAction.WasPressedThisFrame();
         }
     }
 }

@@ -2,11 +2,11 @@ using Project.Core.Blackboard;
 
 namespace Project.Core.Pipeline
 {
+    /// <summary>
+    /// v0.3 變更：配合 ref struct，簽名改為傳址寫入參數 (ref pass)
+    /// </summary>
     public interface IInputSource
     {
-        /// <summary>
-        /// 負責採樣輸入裝置數據並封裝回傳（目前維持 v0.1 簽名）
-        /// </summary>
-        InputData Sample();
+        void FetchRawInput(ref InputData data);
     }
 }
