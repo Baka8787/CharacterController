@@ -2375,7 +2375,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: f2246906-784c-4078-bfe4-23c808f10b69
-      m_Path: <Mouse>/rightButton
+      m_Path: <Mouse>/leftButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 

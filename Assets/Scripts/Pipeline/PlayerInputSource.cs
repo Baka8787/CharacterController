@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 using Project.Core.Blackboard;
 
@@ -7,21 +7,13 @@ namespace Project.Core.Pipeline
     public class PlayerInputSource : MonoBehaviour, IInputSource
     {
         [Header("Unity New Input System Actions")]
-        [Tooltip("³]¸m§ï¬° Action Type: Value, Control Type: Vector2")]
         public InputAction MoveAction;
-
-        [Tooltip("³]¸m§ï¬° Action Type: Value, Control Type: Vector2")]
         public InputAction LookAction;
-
-        [Tooltip("³]¸m§ï¬° Action Type: Button")]
         public InputAction JumpAction;
-
-        [Tooltip("³]¸m§ï¬° Action Type: Button")]
         public InputAction RollAction;
-
-        [Tooltip("³]¸m§ï¬° Action Type: Button")]
         public InputAction FireAction;
 
+        // éµå¾ª 0.1 å‘½åè¦ç¯„ï¼šç§æœ‰æ¬„ä½ä½¿ç”¨ _camelCase
         private readonly InputData _inputData = new InputData();
 
         private void OnEnable()
@@ -44,11 +36,9 @@ namespace Project.Core.Pipeline
 
         public InputData Sample()
         {
-            // 1. ±Ä¼Ë³sÄò¤Gºû¦V¶q¼Æ­È
             _inputData.MoveInput = MoveAction != null ? MoveAction.ReadValue<Vector2>() : Vector2.zero;
             _inputData.LookInput = LookAction != null ? LookAction.ReadValue<Vector2>() : Vector2.zero;
 
-            // 2. ±Ä¼Ë·í´V¬O§_«ö¤U¡]WasPressedThisFrame §¹¬ü«´¦X³æ´V Trigger »İ¨D¡^
             _inputData.JumpButtonDown = JumpAction != null && JumpAction.WasPressedThisFrame();
             _inputData.RollButtonDown = RollAction != null && RollAction.WasPressedThisFrame();
             _inputData.FireButtonDown = FireAction != null && FireAction.WasPressedThisFrame();
